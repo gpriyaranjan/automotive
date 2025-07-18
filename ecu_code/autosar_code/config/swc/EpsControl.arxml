@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-4-0.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>EpsControl</SHORT-NAME>
+      <ELEMENTS>
+        <APPLICATION-SOFTWARE-COMPONENT-TYPE>
+          <SHORT-NAME>EpsControl</SHORT-NAME>
+          <VERSION>1.0.0</VERSION>
+          <DESC>
+            <L-2 L="EN">Electric Power Steering Control Software Component</L-2>
+          </DESC>
+          
+          <!-- Port Interfaces -->
+          <PORTS>
+            <!-- Client-Server Interface: Sensor Data -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SensorData</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/GetSensorData</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <PROVIDED-COM-SPECS>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/SetSensorData</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Client-Server Interface: Motor Control -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MotorControl</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/SetMotorCurrent</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/GetMotorStatus</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Client-Server Interface: Fault Management -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>FaultManagement</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/ReportFault</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+                <CLIENT-SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="OPERATION-PROTOTYPE">/EpsControl/GetFaultStatus</OPERATION-REF>
+                </CLIENT-SERVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Sender-Receiver Interface: ADAS Integration -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>AdasIntegration</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <SENDER-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/EpsControl/AdasCommand</DATA-ELEMENT-REF>
+                </SENDER-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <PROVIDED-COM-SPECS>
+                <SENDER-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/EpsControl/EpsStatus</DATA-ELEMENT-REF>
+                </SENDER-RECEIVER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+            </P-PORT-PROTOTYPE>
+          </PORTS>
+          
+          <!-- Internal Behavior -->
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>EpsControl_InternalBehavior</SHORT-NAME>
+              
+              <!-- Events -->
+              <EVENTS>
+                <INIT-EVENT>
+                  <SHORT-NAME>EpsControl_InitEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EpsControl/EpsControl_Init</START-ON-EVENT-REF>
+                </INIT-EVENT>
+                <TIMING-EVENT>
+                  <SHORT-NAME>EpsControl_PeriodicEvent</SHORT-NAME>
+                  <PERIOD>0.001</PERIOD>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EpsControl/EpsControl_MainFunction</START-ON-EVENT-REF>
+                </TIMING-EVENT>
+              </EVENTS>
+              
+              <!-- Runnable Entities -->
+              <RUNNABLES>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EpsControl_Init</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EpsControl_Init</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EpsControl_MainFunction</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EpsControl_MainFunction</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EpsControl_CalculateAssistTorque</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EpsControl_CalculateAssistTorque</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EpsControl_FaultDetection</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EpsControl_FaultDetection</SYMBOL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              
+              <!-- Data Type Mappings -->
+              <DATA-TYPE-MAPPINGS>
+                <DATA-TYPE-MAPPING>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EpsControl/float32_impl</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAPPING>
+                <DATA-TYPE-MAPPING>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint32</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EpsControl/uint32_impl</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAPPING>
+                <DATA-TYPE-MAPPING>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EpsControl/boolean_impl</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAPPING>
+              </DATA-TYPE-MAPPINGS>
+              
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+          
+          <!-- Implementation -->
+          <IMPLEMENTATIONS>
+            <SWC-IMPLEMENTATION>
+              <SHORT-NAME>EpsControl_Implementation</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/EpsControl/EpsControl_InternalBehavior</BEHAVIOR-REF>
+              <CODE-DESCRIPTORS>
+                <CODE>
+                  <SHORT-NAME>EpsControl.c</SHORT-NAME>
+                  <TYPE>SRC</TYPE>
+                </CODE>
+                <CODE>
+                  <SHORT-NAME>EpsControl.h</SHORT-NAME>
+                  <TYPE>HDR</TYPE>
+                </CODE>
+              </CODE-DESCRIPTORS>
+            </SWC-IMPLEMENTATION>
+          </IMPLEMENTATIONS>
+          
+        </APPLICATION-SOFTWARE-COMPONENT-TYPE>
+        
+        <!-- Port Interfaces -->
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>SensorDataInterface</SHORT-NAME>
+          <OPERATIONS>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>GetSensorData</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>sensorData</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/EpsControl/SensorData_t</TYPE-TREF>
+                  <DIRECTION>OUT</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+              <POSSIBLE-ERROR-REFS>
+                <POSSIBLE-ERROR-REF DEST="APPLICATION-ERROR">/EpsControl/SENSOR_DATA_ERROR</POSSIBLE-ERROR-REF>
+              </POSSIBLE-ERROR-REFS>
+            </OPERATION-PROTOTYPE>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>SetSensorData</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>sensorData</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/EpsControl/SensorData_t</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+            </OPERATION-PROTOTYPE>
+          </OPERATIONS>
+        </CLIENT-SERVER-INTERFACE>
+        
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>MotorControlInterface</SHORT-NAME>
+          <OPERATIONS>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>SetMotorCurrent</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>targetCurrent</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+              <POSSIBLE-ERROR-REFS>
+                <POSSIBLE-ERROR-REF DEST="APPLICATION-ERROR">/EpsControl/MOTOR_CONTROL_ERROR</POSSIBLE-ERROR-REF>
+              </POSSIBLE-ERROR-REFS>
+            </OPERATION-PROTOTYPE>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>GetMotorStatus</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>motorStatus</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/EpsControl/MotorStatus_t</TYPE-TREF>
+                  <DIRECTION>OUT</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+            </OPERATION-PROTOTYPE>
+          </OPERATIONS>
+        </CLIENT-SERVER-INTERFACE>
+        
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>FaultManagementInterface</SHORT-NAME>
+          <OPERATIONS>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>ReportFault</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>faultCode</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint8</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT>
+                <ARGUMENT>
+                  <SHORT-NAME>faultLevel</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint8</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT>
+                <ARGUMENT>
+                  <SHORT-NAME>description</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/string</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+            </OPERATION-PROTOTYPE>
+            <OPERATION-PROTOTYPE>
+              <SHORT-NAME>GetFaultStatus</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT>
+                  <SHORT-NAME>faultStatus</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/EpsControl/FaultStatus_t</TYPE-TREF>
+                  <DIRECTION>OUT</DIRECTION>
+                </ARGUMENT>
+              </ARGUMENTS>
+            </OPERATION-PROTOTYPE>
+          </OPERATIONS>
+        </CLIENT-SERVER-INTERFACE>
+        
+        <!-- Data Types -->
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>float32</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <TYPE-EMITTER>Platform</TYPE-EMITTER>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>uint32</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <TYPE-EMITTER>Platform</TYPE-EMITTER>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>uint8</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <TYPE-EMITTER>Platform</TYPE-EMITTER>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>boolean</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <TYPE-EMITTER>Platform</TYPE-EMITTER>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>string</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <TYPE-EMITTER>Platform</TYPE-EMITTER>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        
+        <!-- Record Data Types -->
+        <APPLICATION-RECORD-DATA-TYPE>
+          <SHORT-NAME>SensorData_t</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>driverTorque</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>steeringAngle</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>vehicleSpeed</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>dataValid</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>timestamp</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+          </ELEMENTS>
+        </APPLICATION-RECORD-DATA-TYPE>
+        
+        <APPLICATION-RECORD-DATA-TYPE>
+          <SHORT-NAME>MotorStatus_t</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>actualCurrent</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>motorVoltage</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>motorTemperature</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/float32</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>motorEnabled</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>faultDetected</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+          </ELEMENTS>
+        </APPLICATION-RECORD-DATA-TYPE>
+        
+        <APPLICATION-RECORD-DATA-TYPE>
+          <SHORT-NAME>FaultStatus_t</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>faultCount</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint8</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>faultLevel</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/uint8</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>systemHealthy</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>safeModeActive</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/EpsControl/boolean</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+          </ELEMENTS>
+        </APPLICATION-RECORD-DATA-TYPE>
+        
+        <!-- Application Errors -->
+        <APPLICATION-ERROR>
+          <SHORT-NAME>SENSOR_DATA_ERROR</SHORT-NAME>
+          <ERROR-CODE>0x01</ERROR-CODE>
+        </APPLICATION-ERROR>
+        
+        <APPLICATION-ERROR>
+          <SHORT-NAME>MOTOR_CONTROL_ERROR</SHORT-NAME>
+          <ERROR-CODE>0x02</ERROR-CODE>
+        </APPLICATION-ERROR>
+        
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR> 

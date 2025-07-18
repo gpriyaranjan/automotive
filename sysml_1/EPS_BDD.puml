@@ -1,0 +1,86 @@
+@startuml EPS_IBD
+' SysML Internal Block Diagram for EPS
+
+' Main block
+class "EPS System" as EPS <<block>>
+
+' Internal parts
+class "Steering Wheel" as SW <<block>>
+class "Torque Sensor" as TS <<block>>
+class "EPS ECU" as ECU <<block>>
+class "Electric Motor" as EM <<block>>
+class "Power Supply" as PS <<block>>
+class "Vehicle CAN Bus" as CAN <<block>>
+
+' Ports (using interfaces for illustration)
+interface "Driver Input" as DriverInput
+interface "Torque Data" as TorqueData
+interface "Control Signal" as ControlSignal
+interface "Motor Power" as MotorPower
+interface "CAN Comm" as CANComm
+
+' Ports on EPS System
+EPS -[hidden]-> SW
+EPS -[hidden]-> TS
+EPS -[hidden]-> ECU
+EPS -[hidden]-> EM
+EPS -[hidden]-> PS
+EPS -[hidden]-> CAN
+
+' Internal connections
+SW -[hidden]-> DriverInput
+TS -[hidden]-> TorqueData
+ECU -[hidden]-> ControlSignal
+EM -[hidden]-> MotorPower
+CAN -[hidden]-> CANComm
+
+' Show connections between parts
+SW -- TS : mechanical link
+TS -- ECU : torque signal
+ECU -- EM : control signal
+EM -- PS : power
+ECU -- CAN : CAN bus
+EPS o-- SW : part
+EPS o-- TS : part
+EPS o-- ECU : part
+EPS o-- EM : part
+EPS o-- PS : part
+EPS o-- CAN : part
+
+' Optionally, show ports on the main block
+EPS : +driverInput
+EPS : +torqueData
+EPS : +controlSignal
+EPS : +motorPower
+EPS : +canComm
+
+note right of EPS
+  The EPS System integrates all subsystems to provide 
+  power-assisted steering, ensuring comfort and safety.
+end note
+
+note right of SW
+  The Steering Wheel is the driver's interface for controlling vehicle direction, transmitting input torque.
+end note
+
+note right of TS
+  The Torque Sensor measures the driver's applied torque and sends this data to the ECU for processing.
+end note
+
+note right of ECU
+  The EPS ECU processes sensor data, determines assistance level, and controls the electric motor. It also communicates with other vehicle systems via CAN.
+end note
+
+note right of EM
+  The Electric Motor provides the necessary torque to assist steering, as commanded by the ECU.
+end note
+
+note right of PS
+  The Power Supply delivers electrical energy to the EPS components, ensuring reliable operation.
+end note
+
+note right of CAN
+  The Vehicle CAN Bus enables communication between the EPS ECU and other vehicle systems for coordination and diagnostics.
+end note
+
+@enduml 
