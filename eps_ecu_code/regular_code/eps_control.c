@@ -76,6 +76,21 @@ void eps_handle_fault(uint32_t fault_code);
 float eps_low_pass_filter(float input, float prev_output, float alpha);
 float eps_clamp_value(float value, float min_val, float max_val);
 
+// Getter for sensor data
+const sensor_data_t* eps_get_sensor_data(void) {
+    return &sensors;
+}
+
+// Getter for control parameters
+const control_params_t* eps_get_control_params(void) {
+    return &control;
+}
+
+// Getter for system state
+const system_state_t* eps_get_system_state(void) {
+    return &system_state;
+}
+
 // Lookup table for base assist torque (simplified - in real implementation this would be a 2D table)
 float eps_lookup_base_assist(float driver_torque, float vehicle_speed) {
     // Simplified mapping - in real implementation this would be a calibrated lookup table
@@ -314,7 +329,7 @@ void eps_control_loop(void) {
     system_state.loop_counter++;
 }
 
-// Main function for demonstration
+#ifndef EPS_UNIT_TEST
 int main(void) {
     // Initialize the EPS system
     eps_initialize_system();
@@ -341,4 +356,5 @@ int main(void) {
     }
     
     return 0;
-} 
+}
+#endif 

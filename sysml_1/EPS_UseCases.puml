@@ -1,0 +1,41 @@
+@startuml EPS_UseCases
+
+actor "Driver" as Driver
+actor "Vehicle Control System" as VCS
+actor "ADAS" as ADAS
+
+rectangle "Electric Power Steering (EPS)" {
+  usecase "Assist Steering" as UC1
+  usecase "Manual Steering Override" as UC2
+  usecase "Self-Diagnosis and Fault Management" as UC3
+  usecase "Fault Indication" as UC4
+  usecase "Torque Feedback" as UC5
+  usecase "Energy Management" as UC6
+  usecase "CAN Communication" as UC7
+  usecase "Fail-Safe Mode" as UC8
+  usecase "Support ADAS Features" as UC9
+  usecase "Sensor Data Acquisition" as UC10
+  usecase "Return-to-Center Control" as UC11
+  usecase "Active Damping / Vibration Suppression" as UC12
+}
+
+Driver -- UC1
+Driver -- UC2
+Driver -- UC4
+Driver -- UC5
+
+VCS -- UC7
+VCS -- UC6
+
+UC3 -- UC4 : <<include>>
+UC8 -- UC2 : <<include>>
+ADAS -- UC9
+UC9 -- UC1 : <<include>>
+UC9 -- UC11 : <<include>>
+UC10 -- UC1 : <<include>>
+UC10 -- UC5 : <<include>>
+UC10 -- UC12 : <<include>>
+UC11 -- UC1 : <<include>>
+UC12 -- UC1 : <<include>>
+
+@enduml 

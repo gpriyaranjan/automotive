@@ -1,57 +1,79 @@
-@startuml EPS_IBD
-' SysML Internal Block Diagram for EPS
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/sysml.puml
 
-' Main block
-class "EPS System" as EPS <<block>>
+@startuml EPS_Requirements
+left to right direction
 
-' Internal parts
-class "Steering Wheel" as SW <<block>>
-class "Torque Sensor" as TS <<block>>
-class "EPS ECU" as ECU <<block>>
-class "Electric Motor" as EM <<block>>
-class "Power Supply" as PS <<block>>
-class "Vehicle CAN Bus" as CAN <<block>>
+' Top-level requirement
+class "REQ-001: EPS System Shall Provide Steering Assistance" as REQ_001 <<requirement>> {
+  "The EPS system shall provide electric steering assistance to the driver based on real-time inputs and vehicle conditions."
+}
 
-' Ports (using interfaces for illustration)
-interface "Driver Input" as DriverInput
-interface "Torque Data" as TorqueData
-interface "Control Signal" as ControlSignal
-interface "Motor Power" as MotorPower
-interface "CAN Comm" as CANComm
+' Functional requirements
+class "REQ-002: Variable  Assist Torque based on Driver Input and Vehicle Speed" as REQ_002 <<requirement>> {
+  "Calculate and provide assist torque using driver torque and vehicle speed, following a calibrated map or function."
+}
+class "REQ-003: Manual Steering Override" as REQ_003 <<requirement>> {
+  "Allow the driver to manually steer the vehicle at all times, even in the event of system failure."
+}
+class "REQ-004: Self-Diagnosis and Fault Management" as REQ_004 <<requirement>> {
+  "Continuously monitor sensors, motor, and ECU; detect and log faults; activate warning and failsafe modes as needed."
+}
+class "REQ-005: ADAS Integration and Override" as REQ_005 <<requirement>> {
+  "Support integration with ADAS features (e.g., lane keeping, park assist) and allow ADAS to override or supplement assist torque."
+}
+class "REQ-006: Return-to-Center Control" as REQ_006 <<requirement>> {
+  "Provide additional assist torque at low speeds to help the steering wheel return to center after a turn."
+}
+class "REQ-007: Active Damping and Vibration Suppression" as REQ_007 <<requirement>> {
+  "Implement algorithms to suppress road-induced vibrations and improve steering feel."
+}
 
-' Ports on EPS System
-EPS -[hidden]-> SW
-EPS -[hidden]-> TS
-EPS -[hidden]-> ECU
-EPS -[hidden]-> EM
-EPS -[hidden]-> PS
-EPS -[hidden]-> CAN
+' Performance requirements
+class "REQ-008: Response Time < 10 ms" as REQ_008 <<requirement>> {
+  "The system shall respond to steering input within 10 milliseconds."
+}
+class "REQ-009: Power Consumption < 500W" as REQ_009 <<requirement>> {
+  "The system shall not exceed 500W power consumption under normal operation."
+}
 
-' Internal connections
-SW -[hidden]-> DriverInput
-TS -[hidden]-> TorqueData
-ECU -[hidden]-> ControlSignal
-EM -[hidden]-> MotorPower
-CAN -[hidden]-> CANComm
+' Safety requirements
+class "REQ-010: Fail-Safe Operation and Failsafe Mode" as REQ_010 <<requirement>> {
+  "In case of critical failure, revert to manual steering and/or reduced assist to ensure driver control."
+}
+class "REQ-011: Fault Indication to Driver" as REQ_011 <<requirement>> {
+  "Indicate detected faults to the driver via dashboard warning lights or messages."
+}
 
-' Show connections between parts
-SW -- TS : mechanical link
-TS -- ECU : torque signal
-ECU -- EM : control signal
-EM -- PS : power
-ECU -- CAN : CAN bus
-EPS o-- SW : part
-EPS o-- TS : part
-EPS o-- ECU : part
-EPS o-- EM : part
-EPS o-- PS : part
-EPS o-- CAN : part
+' Environmental requirements
+class "REQ-012: Operating Temperature -40C to +85C" as REQ_012 <<requirement>> {
+  "Operate reliably within a temperature range of -40°C to +85°C."
+}
+class "REQ-013: Vibration Resistance (ISO 16750-3)" as REQ_013 <<requirement>> {
+  "Withstand vibrations as specified in ISO 16750-3."
+}
 
-' Optionally, show ports on the main block
-EPS : +driverInput
-EPS : +torqueData
-EPS : +controlSignal
-EPS : +motorPower
-EPS : +canComm
+' Interface requirements
+class "REQ-014: CAN Communication with Vehicle Systems" as REQ_014 <<requirement>> {
+  "Communicate with other vehicle systems via the CAN bus."
+}
+class "REQ-015: Sensor Data Acquisition (Torque, Angle, Speed)" as REQ_015 <<requirement>> {
+  "Continuously acquire and process data from torque, steering angle, and vehicle speed sensors."
+}
+
+' Hierarchy
+REQ_001 --|> REQ_002
+REQ_001 --|> REQ_003
+REQ_001 --|> REQ_004
+REQ_001 --|> REQ_005
+REQ_001 --|> REQ_006
+REQ_001 --|> REQ_007
+REQ_001 --|> REQ_008
+REQ_001 --|> REQ_009
+REQ_001 --|> REQ_010
+REQ_001 --|> REQ_011
+REQ_001 --|> REQ_012
+REQ_001 --|> REQ_013
+REQ_001 --|> REQ_014
+REQ_001 --|> REQ_015
 
 @enduml 
