@@ -1,0 +1,50 @@
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/sysml.puml
+
+@startuml EPS_Safety_Goals
+left to right direction
+
+' Safety Goal Requirements (with additional fields)
+class "SG-001: Prevent Unintended Steering Assist" as SG_001 <<requirement>> {
+  "The EPS system shall not provide steering assistance contrary to the driver's intention or external commands (e.g., in ADAS/AD modes), which could lead to an unintended change in vehicle trajectory."
+  --
+  ASIL = "ASIL D"
+  Rationale = "Unintended steering torque application, steering wheel jerk, sudden lane change."
+}
+class "SG-002: Maintain Steerability (No Loss of Assist)" as SG_002 <<requirement>> {
+  "The EPS system shall ensure that the driver always retains the ability to steer the vehicle, even in the event of a system fault. Loss of power steering assist (leading to high steering effort) or complete loss of steering control shall be prevented or mitigated."
+  --
+  ASIL = "ASIL D"
+  Rationale = "Complete loss of steering assist, significant increase in steering effort, inability to steer the vehicle."
+}
+class "SG-003: Prevent Erratic or Oscillatory Steering Behavior" as SG_003 <<requirement>> {
+  "The EPS system shall not exhibit erratic, oscillatory, or unstable steering behavior (e.g., sudden changes in assist, vibrations, or oscillations) that could compromise vehicle stability or driver control."
+  --
+  ASIL = "ASIL D"
+  Rationale = "Oscillatory steering wheel, vibrations, erratic steering response."
+}
+class "SG-004: Ensure Timely and Accurate Fault Indication" as SG_004 <<requirement>> {
+  "In the event of an EPS system malfunction, the driver shall be provided with a clear, unambiguous, and timely indication of the fault status, allowing for appropriate driver action."
+  --
+  ASIL = "ASIL B(C)"
+  Rationale = "Undetected or delayed fault indication leading to hazardous situations if the driver is unaware of reduced functionality."
+}
+class "SG-005: Prevent Mechanical Binding or Locking of Steering" as SG_005 <<requirement>> {
+  "The EPS system shall not cause or contribute to any mechanical binding, jamming, or locking of the steering column or steering mechanism."
+  --
+  ASIL = "ASIL D"
+  Rationale = "Steering wheel lock-up, inability to turn the steering wheel."
+}
+class "SG-006: Maintain Vehicle Directional Control in Degraded Mode" as SG_006 <<requirement>> {
+  "If the EPS system enters a degraded operating mode due to a fault, it shall ensure that the vehicle's directional control is maintained, even if steering effort increases."
+  --
+  ASIL = "ASIL C(D)"
+  Rationale = "Unexpected change in steering characteristics, difficulty in maintaining lane."
+}
+class "SG-007: Protect Against Cyber-Attacks Affecting Steering Function" as SG_007 <<requirement>> {
+  "The EPS system shall be protected against unauthorized external access or manipulation that could compromise its intended steering function."
+  --
+  ASIL = "ASIL D (ISO 21434)"
+  Rationale = "Remote control of steering, disabling of EPS, malicious injection of steering commands."
+}
+
+@enduml 

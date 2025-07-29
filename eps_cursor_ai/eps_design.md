@@ -68,53 +68,53 @@ The EPS algorithm operates in a continuous loop, constantly monitoring driver in
 
 ### **III. Conceptual Flowchart / Pseudocode**
 
-FUNCTION EPS\_Control\_Loop:  
+FUNCTION EPS_Control_Loop:  
     INITIALIZE SYSTEM
 
     LOOP continuously:  
         // A. Sensor Data Acquisition  
-        READ Driver\_Torque (Tau\_driver) from Torque\_Sensor  
-        READ Steering\_Angle (Theta\_steer) from Steering\_Angle\_Sensor  
-        READ Vehicle\_Speed (V\_veh) from Vehicle\_Speed\_Sensor
+        READ Driver_Torque (Tau_driver) from Torque_Sensor  
+        READ Steering_Angle (Theta_steer) from Steering_Angle_Sensor  
+        READ Vehicle_Speed (V_veh) from Vehicle_Speed_Sensor
 
         // B. Data Processing and Analysis  
-        FILTER Tau\_driver, Theta\_steer, V\_veh to remove noise  
-        CALCULATE Steering\_Angular\_Velocity (Omega\_steer) from Theta\_steer
+        FILTER Tau_driver, Theta_steer, V_veh to remove noise  
+        CALCULATE Steering_Angular_Velocity (Omega_steer) from Theta_steer
 
         // C. Assist Torque Calculation (Core Logic)  
         // Base Assist: Main mapping of driver torque and speed to assist  
-        Target\_Assist\_Torque \= LOOKUP\_TABLE(Tau\_driver, V\_veh)
+        Target_Assist_Torque = LOOKUP_TABLE(Tau_driver, V_veh)
 
         // Damping and Inertia Compensation  
-        Target\_Assist\_Torque \+= DAMPING\_COMPONENT(Omega\_steer)  
-        Target\_Assist\_Torque \+= INERTIA\_COMPONENT(Omega\_steer\_acceleration)
+        Target_Assist_Torque += DAMPING_COMPONENT(Omega_steer)  
+        Target_Assist_Torque += INERTIA_COMPONENT(Omega_steer_acceleration)
 
         // Return-to-Center Logic  
-        IF V\_veh \< LOW\_SPEED\_THRESHOLD AND ABS(Theta\_steer) \> RTC\_ANGLE\_THRESHOLD:  
-            Target\_Assist\_Torque \+= RTC\_COMPONENT(Theta\_steer, V\_veh)
+        IF V_veh < LOW_SPEED_THRESHOLD AND ABS(Theta_steer) > RTC_ANGLE_THRESHOLD:  
+            Target_Assist_Torque += RTC_COMPONENT(Theta_steer, V_veh)
 
         // ADAS Integration (if active)  
-        IF ADAS\_Command\_Active:  
-            Target\_Assist\_Torque \= OVERRIDE\_OR\_ADD(Target\_Assist\_Torque, ADAS\_Command\_Torque)
+        IF ADAS_Command_Active:  
+            Target_Assist_Torque = OVERRIDE_OR_ADD( Target_Assist_Torque, ADAS_Command_Torque)
 
         // Clamp assist torque within safe limits  
-        CLAMP Target\_Assist\_Torque between Min\_Assist\_Limit and Max\_Assist\_Limit
+        CLAMP Target_Assist_Torque between Min_Assist_Limit and Max_Assist_Limit
 
         // D. Motor Control  
-        CONVERT Target\_Assist\_Torque to Motor\_Current\_Command  
-        SEND Motor\_Current\_Command to Motor\_Driver  
-        Motor\_Driver CONTROLS Electric\_Motor
+        CONVERT Target_Assist_Torque to Motor_Current_Command  
+        SEND Motor_Current_Command to Motor_Driver  
+        Motor_Driver CONTROLS Electric_Motor
 
         // E. Feedback and Adjustment  
-        MONITOR Actual\_Motor\_Current, Motor\_Position  
+        MONITOR Actual_Motor_Current, Motor_Position  
         ADJUST control parameters based on feedback for next iteration
 
         // F. Fault Detection and Management  
-        PERFORM Self\_Diagnosis\_Checks  
-        IF Fault\_Detected:  
+        PERFORM Self_Diagnosis_Checks  
+        IF Fault_Detected:  
             LOG Error  
-            ACTIVATE EPS\_Warning\_Light  
-            ENGAGE Failsafe\_Mode (e.g., reduced assist)
+            ACTIVATE EPS_Warning_Light  
+            ENGAGE Failsafe_Mode (e.g., reduced assist)
 
         WAIT for next sampling interval  
     END LOOP  

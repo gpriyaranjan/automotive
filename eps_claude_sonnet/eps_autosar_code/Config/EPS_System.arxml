@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AUTOSAR Configuration File for Electronic Power Steering (EPS) System
+  Version: 4.4.0
+  Date: 2025-07-29
+  
+  This file contains the AUTOSAR system configuration for the EPS system
+  according to AUTOSAR R4.4 specification.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_440.xsd">
+  <AR-PACKAGES>
+    <!-- EPS System Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>EPS_System</SHORT-NAME>
+      <ELEMENTS>
+        
+        <!-- Software Component Type Definition -->
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>EPS_SWC_Type</SHORT-NAME>
+          <CATEGORY>APPLICATION_LEVEL</CATEGORY>
+          <PORTS>
+            
+            <!-- Sensor Data Receiver Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SensorData</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/EPS_System/Interfaces/EPS_SensorData_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Motor Command Sender Port -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MotorCommand</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/EPS_System/Interfaces/EPS_MotorCommand_IF</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- System State Sender Port -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SystemState</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/EPS_System/Interfaces/EPS_SystemState_IF</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Performance Data Sender Port -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>PerformanceData</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/EPS_System/Interfaces/EPS_PerformanceData_IF</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Mode Request Receiver Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>ModeRequest</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/EPS_System/Interfaces/EPS_ModeRequest_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Power Management Client Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>PowerManagement</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/EPS_System/Interfaces/PowerManagement_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Safety Manager Client Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SafetyManager</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/EPS_System/Interfaces/SafetyManager_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Sensor Manager Client Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SensorManager</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/EPS_System/Interfaces/SensorManager_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Motor Control Client Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>MotorControl</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/EPS_System/Interfaces/MotorControl_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Diagnostic Manager Client Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>DiagnosticManager</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/EPS_System/Interfaces/DiagnosticManager_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+          <!-- Internal Behavior -->
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>EPS_SWC_InternalBehavior</SHORT-NAME>
+              
+              <!-- Runnable Entities -->
+              <RUNNABLES>
+                
+                <!-- Initialization Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_Init_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_Init_Runnable</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+                <!-- Main Task Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_MainTask_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.001</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_MainTask_Runnable</SYMBOL>
+                  
+                  <!-- Data Read Access -->
+                  <DATA-READ-ACCESSS>
+                    <VARIABLE-ACCESS>
+                      <SHORT-NAME>SensorData_Read</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/EPS_System/EPS_SWC_Type/SensorData</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/EPS_System/Interfaces/EPS_SensorData_IF/SensorData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-READ-ACCESSS>
+                  
+                  <!-- Data Write Access -->
+                  <DATA-WRITE-ACCESSS>
+                    <VARIABLE-ACCESS>
+                      <SHORT-NAME>MotorCommand_Write</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/EPS_System/EPS_SWC_Type/MotorCommand</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/EPS_System/Interfaces/EPS_MotorCommand_IF/MotorCommand</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-WRITE-ACCESSS>
+                  
+                </RUNNABLE-ENTITY>
+                
+                <!-- Safety Monitor Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_SafetyMonitor_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_SafetyMonitor_Runnable</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+                <!-- Diagnostic Task Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_DiagnosticTask_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.1</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_DiagnosticTask_Runnable</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+                <!-- Mode Request Handler Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_ModeRequest_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_ModeRequest_Runnable</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+                <!-- Shutdown Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>EPS_Shutdown_Runnable</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>EPS_Shutdown_Runnable</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+              </RUNNABLES>
+              
+              <!-- Events -->
+              <EVENTS>
+                
+                <!-- Init Event -->
+                <INIT-EVENT>
+                  <SHORT-NAME>EPS_InitEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EPS_System/EPS_SWC_Type/EPS_SWC_InternalBehavior/EPS_Init_Runnable</START-ON-EVENT-REF>
+                </INIT-EVENT>
+                
+                <!-- Timing Event for Main Task -->
+                <TIMING-EVENT>
+                  <SHORT-NAME>EPS_MainTask_TimingEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EPS_System/EPS_SWC_Type/EPS_SWC_InternalBehavior/EPS_MainTask_Runnable</START-ON-EVENT-REF>
+                  <PERIOD>0.001</PERIOD>
+                </TIMING-EVENT>
+                
+                <!-- Timing Event for Safety Monitor -->
+                <TIMING-EVENT>
+                  <SHORT-NAME>EPS_SafetyMonitor_TimingEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EPS_System/EPS_SWC_Type/EPS_SWC_InternalBehavior/EPS_SafetyMonitor_Runnable</START-ON-EVENT-REF>
+                  <PERIOD>0.01</PERIOD>
+                </TIMING-EVENT>
+                
+                <!-- Timing Event for Diagnostic Task -->
+                <TIMING-EVENT>
+                  <SHORT-NAME>EPS_DiagnosticTask_TimingEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EPS_System/EPS_SWC_Type/EPS_SWC_InternalBehavior/EPS_DiagnosticTask_Runnable</START-ON-EVENT-REF>
+                  <PERIOD>0.1</PERIOD>
+                </TIMING-EVENT>
+                
+                <!-- Data Received Event for Mode Request -->
+                <DATA-RECEIVED-EVENT>
+                  <SHORT-NAME>EPS_ModeRequest_DataReceivedEvent</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/EPS_System/EPS_SWC_Type/EPS_SWC_InternalBehavior/EPS_ModeRequest_Runnable</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/EPS_System/EPS_SWC_Type/ModeRequest</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/EPS_System/Interfaces/EPS_ModeRequest_IF/ModeRequest</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+                
+              </EVENTS>
+              
+              <!-- Inter-Runnable Variables -->
+              <INTER-RUNNABLE-VARIABLES>
+                
+                <INTER-RUNNABLE-VARIABLE>
+                  <SHORT-NAME>EPS_IRV_SensorData</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_SensorData_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </INTER-RUNNABLE-VARIABLE>
+                
+                <INTER-RUNNABLE-VARIABLE>
+                  <SHORT-NAME>EPS_IRV_AssistanceParams</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_AssistanceParams_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </INTER-RUNNABLE-VARIABLE>
+                
+                <INTER-RUNNABLE-VARIABLE>
+                  <SHORT-NAME>EPS_IRV_MotorCommand</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_MotorCommand_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </INTER-RUNNABLE-VARIABLE>
+                
+                <INTER-RUNNABLE-VARIABLE>
+                  <SHORT-NAME>EPS_IRV_SystemState</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_SystemState_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </INTER-RUNNABLE-VARIABLE>
+                
+              </INTER-RUNNABLE-VARIABLES>
+              
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+          
+        </APPLICATION-SW-COMPONENT-TYPE>
+        
+      </ELEMENTS>
+      
+      <!-- Sub-packages -->
+      <SUB-PACKAGES>
+        
+        <!-- Interface Definitions Package -->
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            
+            <!-- Sensor Data Interface -->
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>EPS_SensorData_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>SensorData</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_SensorData_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            
+            <!-- Motor Command Interface -->
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>EPS_MotorCommand_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>MotorCommand</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_MotorCommand_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            
+            <!-- System State Interface -->
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>EPS_SystemState_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>SystemState</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_SystemState_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            
+            <!-- Performance Data Interface -->
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>EPS_PerformanceData_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>PerformanceData</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_PerformanceData_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            
+            <!-- Mode Request Interface -->
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>EPS_ModeRequest_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>ModeRequest</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/EPS_System/DataTypes/EPS_OperatingMode_T</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            
+            <!-- Power Management Interface -->
+            <CLIENT-SERVER-INTERFACE>
+              <SHORT-NAME>PowerManagement_IF</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <OPERATIONS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Init</SHORT-NAME>
+                  <POSSIBLE-ERROR-REFS>
+                    <POSSIBLE-ERROR-REF DEST="APPLICATION-ERROR">/EPS_System/Interfaces/PowerManagement_IF/E_NOT_OK</POSSIBLE-ERROR-REF>
+                  </POSSIBLE-ERROR-REFS>
+                </CLIENT-SERVER-OPERATION>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>EnterSleep</SHORT-NAME>
+                </CLIENT-SERVER-OPERATION>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>GetConsumption</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>consumption</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/AUTOSAR_Platform/ImplementationDataTypes/float32</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+              </OPERATIONS>
+              <POSSIBLE-ERRORS>
+                <APPLICATION-ERROR>
+                  <SHORT-NAME>E_NOT_OK</SHORT-NAME>
+                  <ERROR-CODE>1</ERROR-CODE>
+                </APPLICATION-ERROR>
+              </POSSIBLE-ERRORS>
+            </CLIENT-SERVER-INTERFACE>
+            
+          </ELEMENTS>
+        </AR-PACKAGE>
+        
+        <!-- Data Types Package -->
+        <AR-PACKAGE>
+          <SHORT-NAME>DataTypes</SHORT-NAME>
+          <ELEMENTS>
+            
+            <!-- EPS Operating Mode Type -->
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>EPS_OperatingMode_T</SHORT-NAME>
+              <CATEGORY>PRIMITIVE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/uint8</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            
+            <!-- EPS System Status Type -->
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>EPS_SystemStatus_T</SHORT-NAME>
+              <CATEGORY>PRIMITIVE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/uint8</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            
+            <!-- EPS Sensor Data Type -->
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>EPS_SensorData_T</SHORT-NAME>
+              <CATEGORY>STRUCTURE</CATEGORY>
+              <SUB-ELEMENTS>
+                <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>DriverTorque_Nm</SHORT-NAME>
+                  <CATEGORY>PRIMITIVE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/float32</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>SteeringAngle_Deg</SHORT-NAME>
+                  <CATEGORY>PRIMITIVE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/float32</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>VehicleSpeed_KmH</SHORT-NAME>
+                  <CATEGORY>PRIMITIVE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/float32</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>DataValid</SHORT-NAME>
+                  <CATEGORY>PRIMITIVE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR_Platform/BaseTypes/boolean</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              </SUB-ELEMENTS>
+            </IMPLEMENTATION-DATA-TYPE>
+            
+          </ELEMENTS>
+        </AR-PACKAGE>
+        
+      </SUB-PACKAGES>
+      
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

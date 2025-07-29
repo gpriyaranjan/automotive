@@ -1,0 +1,87 @@
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/sysml.puml
+
+@startuml EPS_Functional_Safety_Requirements
+left to right direction
+
+' Functional Safety Requirements (with additional fields)
+class "FSR-001: Prevent Uncommanded Steering Torque Generation" as FSR_001 <<requirement>> {
+  "The EPS system shall monitor its internal states (e.g., sensor inputs, motor current, control outputs) and prevent the generation of steering torque when no assist is commanded by the driver or ADAS/AD function, or when such torque would lead to unintended vehicle movement."
+  --
+  SG_ID = "SG-001"
+  ASIL = "ASIL D"
+  Validation = "Software unit testing for torque control algorithms, HIL testing with fault injection (e.g., corrupted sensor data), vehicle-level testing of unintended steering inputs."
+}
+
+class "FSR-002: Detect and Mitigate Unintended Steering Torque" as FSR_002 <<requirement>> {
+  "The EPS system shall detect unintended steering torque generation within a specified fault detection time interval and immediately mitigate it by reducing or disabling motor current to zero, or transitioning to a safe state."
+  --
+  SG_ID = "SG-001"
+  ASIL = "ASIL D"
+  Validation = "Fault injection testing (e.g., short circuit in motor control, sensor failure causing false torque request), measurement of fault detection time, verification of safe state entry."
+}
+
+class "FSR-003: Ensure Availability of Manual Steerability" as FSR_003 <<requirement>> {
+  "The EPS system shall be designed such that, in the event of a total loss of power assistance, the driver can still manually steer the vehicle, even if with increased effort, without mechanical locking or excessive friction."
+  --
+  SG_ID = "SG-002"
+  ASIL = "ASIL D"
+  Validation = "Mechanical design review, friction torque measurement in powered-off state, vehicle-level subjective evaluation by test drivers under various speed conditions."
+}
+
+class "FSR-004: Detect and Mitigate Loss of Steering Assist" as FSR_004 <<requirement>> {
+  "The EPS system shall detect loss of steering assist functionality (e.g., due to power failure, motor failure, control unit failure) within a specified fault detection time and activate a warning to the driver."
+  --
+  SG_ID = "SG-002"
+  ASIL = "ASIL D"
+  Validation = "Power supply interruption testing, motor open/short circuit fault injection, control unit self-diagnosis error injection, measurement of fault detection time."
+}
+
+class "FSR-005: Prevent Oscillatory or Erratic Steering Response" as FSR_005 <<requirement>> {
+  "The EPS control algorithms shall be designed to prevent and suppress oscillations, instability, or erratic changes in steering assist that could lead to loss of vehicle control or driver discomfort."
+  --
+  SG_ID = "SG-003"
+  ASIL = "ASIL D"
+  Validation = "Closed-loop control system analysis (stability margins), HIL testing with varying road conditions and driver inputs, vehicle-level subjective evaluation."
+}
+
+class "FSR-006: Detect and Mitigate Oscillatory Behavior" as FSR_006 <<requirement>> {
+  "The EPS system shall detect abnormal oscillatory or unstable behavior within a specified fault detection time and transition to a safe state, which may involve reducing assist or disabling the system."
+  --
+  SG_ID = "SG-003"
+  ASIL = "ASIL D"
+  Validation = "Fault injection (e.g., sensor noise, corrupted feedback), monitoring of steering torque and angle derivatives, verification of safe state transition."
+}
+
+class "FSR-007: Activate Driver Warning for EPS Malfunctions" as FSR_007 <<requirement>> {
+  "The EPS system shall activate a visual and/or audible warning to the driver within a specified time upon detection of any safety-critical malfunction that affects the EPS performance or safety goals."
+  --
+  SG_ID = "SG-004"
+  ASIL = "ASIL B(C)"
+  Validation = "Fault injection at component and system level, verification of warning lamp illumination and/or audible alert activation time."
+}
+
+class "FSR-008: Prevent Mechanical Obstruction of Steering" as FSR_008 <<requirement>> {
+  "The EPS mechanical and electrical design shall prevent any internal fault (e.g., motor seizure, gear binding, component detachment) from causing a mechanical obstruction, jamming, or locking of the steering mechanism."
+  --
+  SG_ID = "SG-005"
+  ASIL = "ASIL D"
+  Validation = "Mechanical design review, failure mode and effects analysis (FMEA) on mechanical components, stress testing."
+}
+
+class "FSR-009: Provide Graceful Degradation in Fault Scenarios" as FSR_009 <<requirement>> {
+  "In the event of a non-critical fault or partial failure, the EPS system shall transition to a predefined degraded mode of operation that maintains basic steerability while informing the driver of reduced functionality."
+  --
+  SG_ID = "SG-006"
+  ASIL = "ASIL C(D)"
+  Validation = "Fault injection of non-critical component failures, vehicle-level subjective evaluation of steering feel in degraded modes."
+}
+
+class "FSR-010: Implement Secure Communication and Software Execution" as FSR_010 <<requirement>> {
+  "The EPS control unit shall implement secure communication protocols (e.g., authenticated messages) and robust software execution mechanisms (e.g., memory protection, secure boot) to prevent unauthorized control or manipulation of the steering function."
+  --
+  SG_ID = "SG-007"
+  ASIL = "ASIL D"
+  Validation = "Penetration testing, Fuzz testing on communication interfaces, secure boot verification, static code analysis for vulnerabilities."
+}
+
+@enduml 
